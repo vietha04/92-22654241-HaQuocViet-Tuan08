@@ -92,9 +92,9 @@
                 $(".chkDoDung:checked").each(function() {
                     tienDD += parseFloat($(this).val());
                 });
-                $(".txtDD").val(tienDD);
-                var tong = parseFloat($(".txtDD").val()) + parseFloat($("#txtDV").val());
-                $(".txtTong").val(tong);
+                $("#txtDD").val(tienDD);
+                var tong = parseFloat($("#txtDD").val()) + parseFloat($("#txtDV").val());
+                $("#txtTong").val(tong);
             });
             // Save data to table
             $("#btnSave").click(function() {
@@ -248,7 +248,7 @@
                                         <label for="">Tiền Đồ dùng:</label>
                                     </div>
                                     <div class="col-8 col-sm-6">
-                                        <input type="text" name="txtDD" class="txtDD form-control" value="0" disabled>
+                                        <input type="text" name="txtDD" id="txtDD" class="form-control" value="0" disabled>
                                     </div>
                                 </div>
                                 <br>
@@ -257,7 +257,7 @@
                                         <label for="">Tổng tiền:</label>
                                     </div>
                                     <div class="col-8 col-sm-6">
-                                        <input type="text" name="txtTong" class="txtTong form-control" disabled>
+                                        <input type="text" name="txtTong" id="txtTong" class="form-control" disabled>
                                     </div>
                                 </div>
                                 <br>
