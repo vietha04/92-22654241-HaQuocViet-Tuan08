@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bai tap tuan 08 </title>
+    <link rel="stylesheet" href="../CSS/bootstrap.min.css">
+    <script src="../JS/jquery-3.7.1.min.js"></script>
+    <script src="../JS/bootstrap.min.js"></script>
+    <style>
+        .mauDo{
+            font-size: 100%;
+            color: red;
+        }
+        [class*="col-"]{
+            padding-right: 0;
+            padding-left: 0;
+        }
+        li{
+            width: 150px;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            var i = 2;
+            $("#btnDK").click(function() {
+                $("#myModal").modal('show');
+            });
+            $(".btn-close").click(function() {
+                $("#myModal").modal('hide');
+            });
+
+            // Validate mã học viên
+            function KiemTraMa() {
+                var pattern = /^[0-9]{2}[0-9]{8}$/;
+                if (!pattern.test($("#txtMa").val())) {
+                    $("#tbMa").html("Sai định dạng (xxyyyyyyyy)");
+                    $("#tbMa").addClass("mauDo");
+                    return false;
+                } else {
+                    $("#tbMa").html("*");
+                    return true;
+                }
+            }
+            $("#txtMa").blur(KiemTraMa);
+
+            // Validate họ tên
+            function KiemtraHT() {
+                var pattern = /^[A-Z][a-z]+(\s[A-Z][a-z]+)+$/;
+                if ($("#txtHT").val() === "") {
+                    $("#tbTen").html("Nhập tên hợp lệ (Nguyen Van A)");
+                    $("#tbTen").addClass("mauDo");
+                    return false;
+                }
+                if (!pattern.test($("#txtHT").val())) {
+                    $("#tbTen").html("* Chữ cái đầu của mỗi từ phải viết hoa và tối thiểu 2 từ");
+                    $("#tbTen").addClass("mauDo");
+                    return false;
+                }
+                $("#tbTen").html("*");
+                return true;
+            }
+            $("#txtHT").blur(KiemtraHT);
+
+            // Validate Email
+            function KiemtraDC() {
+                var pattern = /^[a-zA-Z0-9._%+-]+@iuh.edu.vn$/;
+                if ($("#txtDC").val() === "") {
+                    $("#tbDC").html("Bắt buộc nhập");
+                    $("#tbDC").addClass("mauDo");
+                    return false;
+                }
+                if (!pattern.test($("#txtDC").val())) {
+                    $("#tbDC").html("Email phải có đuôi @iuh.edu.vn");
+                    $("#tbDC").addClass("mauDo");
+                    return false;
+                }
+                $("#tbDC").html("*");
+                return true;
+            }
+            $("#txtDC").blur(KiemtraDC);
+
+            $("#slGia").change(function() {
+                $("#slGia option:selected").each(function(){
+                    alert($(this).val());
+                    $("#txtDV").val($(this).val());
+                });
+            });
+
+            $(".chkDoDung").click(function() {
+                var tienDD = 0;
+                $(".chkDoDung:checked").each(function() {
+                    tienDD += parseFloat($(this).val());
+                });
+                $(".txtDD").val(tienDD);
+                var tong = parseFloat($(".txtDD").val()) + parseFloat($("#txtDV").val());
+                $(".txtTong").val(tong);
+            });
+            // Save data to table
+            $("#btnSave").click(function() {
+                if (!KiemTraMa() || !KiemtraHT() || !KiemtraDC()) {
+                    alert("Vui lòng nhập đầy đủ và hợp lệ thông tin!");
+                    return false;
+                }
+
+                var ma = $("#txtMa").val();
+                var ht = $("#txtHT").val();
+                var dc = $("#txtDC").val();
+                var tdv = $("#txtDV").val();
+                var tdd = $("#txtDD").val();
+                var tong = $("#txtTong").val();
+
+                var them = "<tr><td>" + (i++) + "</td><td>" + ma + "</td><td>" + ht + "</td><td>" + dc + "</td><td>" + tdv + "</td><td>" + tdd + "</td><td>" + tong + "</td></tr>";
+                $("#tbDanhSach").append(them);
+                $("#myModal").modal("hide");
+                return true;
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container border">
+        <div class="row">
+            <div class="col-12">
+                <img src="../IMG/Screenshot_7.png" alt="" width="100%">
+            </div>
+        </div>
+        <div class="row">
+            <nav class="navbar">
+                <ul class="nav nav-navbar navbar-expand">
+                    <li class="nav-item"><a href="#" class="nav-link">Trang Chủ</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" id="btnDK">Đăng ký</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row">
+            <table class="table-bordered table-light table-primary table-hover table table-striped" id="tbDanhSach">
+                <tr>
+                    <th>STT</th>
+                    <th>Mã Học Viên</th>
+                    <th>Họ Tên</th>
+                    <th>Email</th>
+                    <th>Tiền Dịch vụ</th>
+                    <th>Tiền đồ dùng</th>
+                    <th>Tổng tiền</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1234556789</td>
+                    <td>Trần Anh</td>
+                    <td>hongquan@iuh.edu.vn</td>
+                    <td>30000</td>
+                    <td>10000</td>
+                    <td>40000</td>
+                </tr>
+            </table>
+        </div>
+        <div class="row">
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>THÔNG TIN THANH TOÁN</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" class="form-control">
+                                <div class="row form-group p-1">
+                                    <div class="col-3 col-sm-3">
+                                        <label for="">Mã Học Viên:</label>
+                                    </div>
+                                    <div class="col-6 col-sm-6">
+                                        <input type="text" class="form-control" placeholder="123456789" id="txtMa">
+                                    </div>
+                                    <div class="col-3 col-sm-3 p-2">
+                                        <span id="tbMa">*</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group p-1">
+                                    <div class="col-3 col-sm-3">
+                                        <label for="">Họ Tên:</label>
+                                    </div>
+                                    <div class="col-6 col-sm-6">
+                                        <input type="text" class="form-control" placeholder="Tran Van A" id="txtHT">
+                                    </div>
+                                    <div class="col-3 col-sm-3 p-2">
+                                        <span id="tbTen">*</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group p-1">
+                                    <div class="col-3 col-sm-3">
+                                        <label for="">Email:</label>
+                                    </div>
+                                    <div class="col-6 col-sm-6">
+                                        <input type="text" class="form-control" placeholder="vietha@iuh.edu.vn" id="txtDC">
+                                    </div>
+                                    <div class="col-3 col-sm-3 p-2">
+                                        <span id="tbDC">*</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group p-1">
+                                    <div class="col-4 col-sm-3">
+                                        <label for="">Dịch Vụ:</label>
+                                    </div>
+                                    <div class="col-6 col-sm-6">
+                                        <select name="gia" class="form-control" id="slGia">
+                                            <option value="2000">Bơi</option>
+                                            <option value="3000">Trượt ván</option>
+                                            <option value="5000">Moto nước</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group p-1">
+                                    <div class="col-4 col-sm-3">
+                                        <label for="">Giá tiền:</label>
+                                    </div>
+                                    <div class="col-8 col-sm-6">
+                                        <input type="text" name="txtDV" id="txtDV" class="form-control"  disabled>
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col-4 col-sm-3">
+                                        <label for=""> Đồ dùng:</label>
+                                    </div>
+                                    <div class="col-8 col-sm-6">
+                                        <input type="checkbox" name="chkDoDung" class="chkDoDung" value="20000"> Áo quần bơi
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col-4 col-sm-3">
+                                        <label for=""></label>
+                                    </div>
+                                    <div class="col-8 col-sm-6">
+                                        <input type="checkbox" name="chkDoDung" class="chkDoDung" value="50000"> Phao
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col-4 col-sm-3">
+                                        <label for=""></label>
+                                    </div>
+                                    <div class="col-8 col-sm-6">
+                                        <input type="checkbox" name="chkDoDung" class="chkDoDung" value="70000"> Kính Bơi
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col-4 col-sm-3">
+                                        <label for="">Tiền Đồ dùng:</label>
+                                    </div>
+                                    <div class="col-8 col-sm-6">
+                                        <input type="text" name="txtDD" class="txtDD form-control" value="0" disabled>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row p-1">
+                                    <div class="col-4 col-sm-3">
+                                        <label for="">Tổng tiền:</label>
+                                    </div>
+                                    <div class="col-8 col-sm-6">
+                                        <input type="text" name="txtTong" class="txtTong form-control" disabled>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row p-1">
+                                    <div class="col-sm-6">
+                                        <input type="button" value="Thanh Toán" id="btnSave" class="btn btn-success btn-block" style="width: 100%;">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="reset" value="Hủy" class="btn btn-danger btn-block" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <h4>Trang Thanh Toán</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 col-md-4">
+                <h6>
+                    Mã Sinh Viên:___________________
+                </h6>
+            </div>
+            <div class="col-4 col-md-4">
+                <h6>
+                    Họ tên:___________________
+                </h6>
+            </div>
+            <div class="col-4 col-md-4">
+                <h6>
+                    Phòng Thi:___________________
+                </h6>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
